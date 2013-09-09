@@ -7,7 +7,7 @@
     "url": "https://github.com/hoodiehq/hoodie-app.git"
   },
   "dependencies": {
-    "hoodie": "https://github.com/hoodiehq/hoodie.js.git#v0.4-peanuts-task-api",
+    "hoodie": ">=0.4.0",
     "http-proxy": "*",
     "connect": "2.7.4",
     "corsproxy": "git://github.com/gr2m/CORS-Proxy.git",
