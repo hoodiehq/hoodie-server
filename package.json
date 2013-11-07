@@ -7,7 +7,7 @@
     "url": "https://github.com/hoodiehq/hoodie-server.git"
   },
   "dependencies": {
-    "hoodie": "git://github.com/hoodiehq/hoodie.js.git",
+    "hoodie": "~0.4.6",
     "http-proxy": "*",
     "connect": "2.7.4",
     "multicouch": ">=0.6.1",
