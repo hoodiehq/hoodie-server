@@ -25,12 +25,8 @@
     "optimist": "0.5.0",
     "ports": "1.0.0",
     "mkdirp": "0.3.5",
-<<<<<<< HEAD
-    "dispatch": "0.2.0"
-=======
     "hapi": "2.1.1",
     "http-proxy": "0.10.4"
->>>>>>> 916798b972bb3de4d7e30c38e72d5f5066a84ca0
   },
   "scripts": {
     "start": "bin/start",
