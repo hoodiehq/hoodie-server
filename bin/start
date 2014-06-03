@@ -17,7 +17,7 @@ var argv = require('optimist')
   .describe('local-tld', 'Turn on local-tld on supported platforms')
   .describe('no-local-tld', 'Turn off local-tld on supported platforms')
   .alias('c', 'custom-ports')
-  .describe('custom-ports', 'Provide custom ports couch,admin,www')
+  .describe('custom-ports', 'Provide custom ports couchdb,admin,www')
   .alias('h', 'help')
   .describe('help', 'Show usage information')
   .argv;
