@@ -34,7 +34,7 @@
     "bundle-bump-bot": "^1.1.0",
     "bl": "^1.0.0",
     "coveralls": "^2.11.4",
-    "hoodie": "^2.1.1",
+    "hoodie": "^11.0.0",
     "hoodie-admin-dashboard": "^2.0.0",
     "hoodie-admin-dashboard-uikit": "^3.0.0",
     "nyc": "^3.2.2",
