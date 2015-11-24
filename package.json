@@ -21,7 +21,7 @@
     "npmlog": "^1.2.1",
     "ports": "^1.1.0",
     "random-string": "^0.1.2",
-    "request": "^2.65.0",
+    "request": "^2.67.0",
     "semver": "^5.0.3",
     "spawn-pouchdb-server": "^3.3.0",
     "wreck": "^7.0.0"
