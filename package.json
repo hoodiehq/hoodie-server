@@ -59,7 +59,7 @@
   "main": "lib/index.js",
   "peerDependencies": {
     "hoodie-admin-dashboard": "^3.1.0",
-    "hoodie-client": "^1.0.0"
+    "hoodie-client": "^2.2.0"
   },
   "publishConfig": {
     "tag": "next"
