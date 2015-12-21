@@ -27,7 +27,7 @@ test('init couchdb', function (t) {
 
     t.is(result.secret, 'foo')
     t.is(result.authentication_db, '_users')
-    t.equals(result.admins, {
+    t.same(result.admins, {
       user: 'secret'
     })
 

@@ -22,15 +22,6 @@ test('get couch admins', function (t) {
   t.test('request succeds', function (tt) {
     var getAdmins = require('../../../lib/couchdb.js').getAdmins
 
-    tt.plan(5)
-
-    getAdmins(function (input, callback) {
-      tt.is(input.url, '/_config/admins')
-      callback(null, null, {})
-    }, function (err) {
-      tt.ok(err instanceof Error)
-    })
-
     getAdmins(function (input, callback) {
       tt.is(input.url, '/_config/admins')
       callback(null, null, {
@@ -40,6 +31,7 @@ test('get couch admins', function (t) {
       tt.error(err)
 
       tt.is(admins.user, 'secret')
+      tt.end()
     })
   })
 
