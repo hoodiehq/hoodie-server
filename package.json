@@ -11,7 +11,7 @@
     "good-squeeze": "^2.1.0",
     "h2o2": "^5.0.0",
     "hapi": "^11.0.3",
-    "hoodie-server-account": "git://github.com/hoodiehq/hoodie-server-account.git#admins",
+    "hoodie-server-account": "^2.0.1",
     "hoodie-server-store": "^1.0.1",
     "inert": "^3.1.0",
     "jsonfile": "^2.2.3",
