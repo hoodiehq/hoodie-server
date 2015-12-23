@@ -74,6 +74,6 @@
     "pretest": "standard",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "start": "bin/start",
-    "test": "nyc tap --no-cov ./test/{unit,integration}/{**,**/**}.js"
+    "test": "nyc tap --no-cov ./test/{unit,integration}/{**,**/**}-test.js"
   }
 }
