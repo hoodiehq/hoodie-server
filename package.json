@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "async": "^1.5.0",
+    "boom": "^3.1.0",
     "good": "^6.4.0",
     "good-squeeze": "^2.1.0",
     "h2o2": "^5.0.0",
