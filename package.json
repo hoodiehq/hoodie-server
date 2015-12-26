@@ -1,5 +1,6 @@
 {
   "name": "hoodie-server",
+  "version": "0.0.0-placeholder-for-git-install",
   "description": "The core of the Hoodie backend",
   "author": "The Hoodie Community",
   "bugs": {
@@ -34,7 +35,7 @@
     "bundle-bump-bot": "^1.1.0",
     "coveralls": "^2.11.4",
     "hoodie-admin-dashboard": "^3.1.0",
-    "hoodie-client": "^2.2.0",
+    "hoodie-client": "^3.1.0",
     "nock": "^3.3.2",
     "nyc": "^5.0.0",
     "proxyquire": "^1.7.3",
@@ -61,10 +62,10 @@
     "hoodie-client": "^2.2.0"
   },
   "publishConfig": {
-    "tag": "next"
+    "tag": "master"
   },
   "release": {
-    "branch": "next"
+    "branch": "master"
   },
   "repository": {
     "type": "git",
