@@ -42,12 +42,8 @@ function mockCouchDB () {
       committed_update_seq: 709
     })
 
-    .post('/_users/_bulk_docs', {
-      docs: [{
-        _id: '_design/byId',
-        views: {'byId': {}}}
-      ],
-      new_edits: true
+    .post('/_users/_bulk_docs', function (body) {
+      return body.new_edits && body.docs.length === 1 && body.docs[0]._id === '_design/byId'
     })
     .reply(201, [{
       ok: true,
