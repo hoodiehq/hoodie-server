@@ -15,7 +15,7 @@
     "hoodie-server-store": "^1.0.1",
     "inert": "^3.1.0",
     "jsonfile": "^2.2.3",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "memdown": "^1.1.0",
     "mkdirp": "^0.5.1",
     "my-first-hoodie": "^4.0.0",
