@@ -13,12 +13,12 @@
     "good-squeeze": "^2.1.0",
     "h2o2": "^5.0.0",
     "hapi": "^13.0.0",
-    "hoodie-server-account": "^2.0.1",
-    "hoodie-server-store": "^1.0.1",
+    "hoodie-server-account": "^2.5.0",
+    "hoodie-server-store": "^1.0.2",
     "inert": "^3.1.0",
     "joi": "^7.0.1",
     "jsonfile": "^2.2.3",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "lout": "^8.0.1",
     "memdown": "^1.1.0",
     "mkdirp": "^0.5.1",
@@ -42,7 +42,7 @@
     "rimraf": "^2.4.3",
     "semantic-release": "^4.3.5",
     "standard": "^6.0.4",
-    "tap": "^5.0.1"
+    "tap": "^5.1.1"
   },
   "engines": {
     "node": ">=4"
