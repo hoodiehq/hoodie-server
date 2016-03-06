@@ -14,7 +14,7 @@
 
 - provide a normalized [config](lib/config.js) for itself and all core components/plugins
 - provide an API to interact with [databases](lib/database.js) to components/plugins
-- start and configure a [hapi server](lib/hapi.js) that also serves [static components](lib/static.js) like hoodie-client and hoodie-admin-dashboard
+- start and configure a [hapi server](lib/hapi.js) that also serves [static assets](lib/public.js) like hoodie-client and hoodie-admin-dashboard
 
 The rest is handled by components like [hoodie-server-account](https://github.com/hoodiehq/hoodie-server-account), or [hoodie-server-store](https://github.com/hoodiehq/hoodie-server-store).
 
@@ -36,16 +36,16 @@ hoodie-start
 
 There are a few options to change the behaviour of `hoodie-server`.
 
-path: Project path (optional) Default: process.cwd()
-loglevel: (optional) Default: 'warn'
+- `path`: Project path (optional) Default: process.cwd()
+- `loglevel`: (optional) Default: 'warn'
 
-port: Port-number to run the Hoodie App on (optional)
-bindAddress': Address that Hoodie binds to (optional) Default: 127.0.0.1
-www: WWW path (optional) Default: path.join(options.path, 'www')
+- `port`: Port-number to run the Hoodie App on (optional)
+- `bindAddress`: Address that Hoodie binds to (optional) Default: 127.0.0.1
+- `public`: path to static assets (optional) Default: path.join(options.path, 'public')
 
-inMemory: Whether to start the PouchDB Server in memory (optional) Default: false
-dbUrl: If provided does not start PouchDB Server and uses external CouchDB. Has to contain credentials. (optional)
-data: Data path (optional) Default: path.join(options.path, 'data')
+- `inMemory`: Whether to start the PouchDB Server in memory (optional) Default: false
+- `dbUrl`: If provided does not start PouchDB Server and uses external CouchDB. Has to contain credentials. (optional)
+- `data`: Data path (optional) Default: path.join(options.path, 'data')
 
 If that doesn’t make much sense just yet, don’t worry about it.
 
