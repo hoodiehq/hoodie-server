@@ -17,7 +17,7 @@ test('config', function (t) {
     tt.is(config.name, 'hoodie-server', 'exposes name from package.json')
     tt.is(config.paths.project, cwd, 'uses cwd as project path')
     tt.ok(config.paths.data.startsWith(cwd), 'derives data path from cwd')
-    tt.match(config.paths.public, /my-first-hoodie/, 'falls back to my-first-hoodie for public')
+    tt.match(config.paths.public, /hoodie-server\/public/, 'falls back to hoodie-server/public')
 
     tt.same(config.db, {}, 'uses empty db config')
     tt.same(config.app, {
