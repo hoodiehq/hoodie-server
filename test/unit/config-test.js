@@ -15,11 +15,12 @@ test('config', function (t) {
     var cwd = process.cwd()
 
     tt.is(config.name, 'hoodie-server', 'exposes name from package.json')
-    tt.is(config.paths.project, cwd, 'uses cwd as project path')
-    tt.ok(config.paths.data.startsWith(cwd), 'derives data path from cwd')
+    tt.ok(config.paths.data.startsWith(cwd), 'derives hoodie path from cwd')
     tt.match(config.paths.public, /hoodie-server\/public/, 'falls back to hoodie-server/public')
 
-    tt.same(config.db, {}, 'uses empty db config')
+    tt.same(config.db, {
+      prefix: '.hoodie/data/'
+    }, 'uses default db config')
     tt.same(config.app, {
       hostname: '127.0.0.1',
       port: 8080,
@@ -49,7 +50,6 @@ test('config', function (t) {
     })
 
     var config = getConfig({
-      path: 'project-path',
       data: 'data-path',
       public: 'public-path',
       bindAddress: 'hoodie-test',
@@ -57,7 +57,6 @@ test('config', function (t) {
     })
 
     tt.is(config.name, 'overwritten', 'exposes name from package.json')
-    tt.is(config.paths.project, 'project-path', 'uses path option as project path')
     tt.is(config.paths.data, 'data-path', 'uses data option as data path')
     tt.is(config.paths.public, 'public-path', 'uses public option as public path')
 

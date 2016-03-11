@@ -36,16 +36,15 @@ npm install
 
 There are a few options to change the behaviour of `hoodie-server`.
 
-option        | default                           |   description
-------------- | --------------------------------- | -------------
-path          | process.cwd()                     | Project path
-loglevel      | 'warn'                            |
-port          | 8080                              | Port-number to run the Hoddie App on
-bindAddress   | 127.0.0.1                         | Address that Hoodie binds to
-public        | path.join(options.path, 'public') | path to static assets
-inMemory      | false                             | Whether to start the PouchDB Server in memory
-dbUrl         | PouchDB Server                    | If provided does not start PouchDB Server and uses external CouchDB. Has to contain credentials.
-data          | path.join(options.path, 'data')   | Data path
+option        | default                            | description
+------------- | ---------------------------------- | -------------
+loglevel      | 'warn'                             |
+port          | 8080                               | Port-number to run the Hoodie App on
+bindAddress   | 127.0.0.1                          | Address that Hoodie binds to
+public        | path.join(options.path, 'public')  | path to static assets
+inMemory      | false                              | Whether to start the PouchDB Server in memory
+dbUrl         | PouchDB Server                     | If provided does not start PouchDB Server and uses external CouchDB. Has to contain credentials.
+data          | path.join(options.path, '.hoodie') | Data path
 
 If that doesn’t make much sense just yet, don’t worry about it.
 
