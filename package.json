@@ -14,7 +14,7 @@
     "h2o2": "^5.0.0",
     "hapi": "^13.0.0",
     "hoodie-server-account": "^2.5.0",
-    "hoodie-server-store": "git://github.com/hoodiehq/hoodie-server-store#proxy-to-pouchdb",
+    "hoodie-server-store": "v1.1.0",
     "inert": "^3.1.0",
     "joi": "^7.0.1",
     "jsonfile": "^2.2.3",
