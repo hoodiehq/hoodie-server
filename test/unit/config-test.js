@@ -6,17 +6,17 @@ var mkdirp = {
   sync: function () {},
   '@noCallThru': true
 }
+var cwd = process.cwd()
 
 test('config', function (t) {
   t.test('default', function (tt) {
     var getConfig = proxyquire('../../lib/config', {mkdirp: mkdirp})
 
     var config = getConfig({})
-    var cwd = process.cwd()
 
     tt.is(config.name, 'hoodie-server', 'exposes name from package.json')
     tt.ok(config.paths.data.startsWith(cwd), 'derives hoodie path from cwd')
-    tt.match(config.paths.public, /hoodie-server\/public/, 'falls back to hoodie-server/public')
+    tt.match(config.paths.public, cwd + '/public', 'falls back to hoodie-server/public')
 
     tt.same(config.db, {
       prefix: '.hoodie/data/'
@@ -31,12 +31,8 @@ test('config', function (t) {
   })
 
   t.test('applies overwrites', function (tt) {
-    var getConfig = proxyquire('../../lib/config', {
+    var options = {
       mkdirp: mkdirp,
-      'project-path/package.json': {
-        name: 'overwritten',
-        '@noCallThru': true
-      },
       fs: {
         statSync: function () {
           return {
@@ -47,7 +43,12 @@ test('config', function (t) {
         },
         '@noCallThru': true
       }
-    })
+    }
+    options[cwd + '/package.json'] = {
+      name: 'overwritten',
+      '@noCallThru': true
+    }
+    var getConfig = proxyquire('../../lib/config', options)
 
     var config = getConfig({
       data: 'data-path',
