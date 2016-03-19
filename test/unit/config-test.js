@@ -19,7 +19,7 @@ test('config', function (t) {
     tt.match(config.paths.public, cwd + '/public', 'falls back to hoodie-server/public')
 
     tt.same(config.db, {
-      prefix: '.hoodie/data/'
+      prefix: cwd + '/.hoodie/data/'
     }, 'uses default db config')
     tt.same(config.app, {
       hostname: '127.0.0.1',
