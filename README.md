@@ -16,7 +16,7 @@
 - providing an API to interact with [databases](lib/database.js) to components/plugins
 - starting and configuring a [hapi server](lib/hapi.js) that also serves [static components](lib/static.js) like hoodie-client and hoodie-admin-dashboard
 
-The rest is handled by components like [hoodie-server-account](https://github.com/hoodiehq/hoodie-server-account), or [hoodie-server-store](https://github.com/hoodiehq/hoodie-server-store).
+The rest is handled by components like [hoodie-account-server](https://github.com/hoodiehq/hoodie-account-server), or [hoodie-store-server](https://github.com/hoodiehq/hoodie-store-server).
 
 `hoodie-server` isn’t meant to be used by itself and it is used by the `hoodie` module, which also inlcudes `hoodie-client` to form Hoodie.
 
