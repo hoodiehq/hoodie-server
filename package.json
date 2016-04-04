@@ -7,14 +7,14 @@
     "url": "https://github.com/hoodiehq/hoodie-server/issues"
   },
   "dependencies": {
+    "@hoodie/account": "1.0.0",
+    "@hoodie/store": "1.0.0",
     "async": "^1.5.2",
     "boom": "^3.1.0",
     "good": "^6.4.0",
     "good-squeeze": "^2.1.0",
     "h2o2": "^5.0.0",
     "hapi": "^13.0.0",
-    "hoodie-server-account": "^2.5.0",
-    "hoodie-server-store": "v1.1.0",
     "inert": "^3.1.0",
     "joi": "^7.0.1",
     "jsonfile": "^2.2.3",
