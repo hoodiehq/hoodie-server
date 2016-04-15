@@ -9,7 +9,7 @@
     "@hoodie/server-account-node-sessions": "^1.0.0",
     "async": "^1.5.2",
     "good": "^6.4.0",
-    "good-squeeze": "^2.1.0",
+    "good-squeeze": "^3.0.1",
     "h2o2": "^5.0.0",
     "hapi": "^13.0.0",
     "hoodie-server-store": "^1.0.1",
