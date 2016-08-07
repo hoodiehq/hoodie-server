@@ -1,0 +1,53 @@
+{
+  "name": "@hoodie/server",
+  "version": "0.0.0-semantically-released",
+  "description": "Hapi plugin for Hoodie’s server core module",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "postsemantic-release": "npm run coverage",
+    "pretest": "standard",
+    "test": "nyc tap --no-cov ./test/{unit,integration}/{**,**/**}-test.js"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoodiehq/hoodie-server-legacy.git"
+  },
+  "keywords": [
+    "hapi",
+    "plugin"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hoodiehq/hoodie-server-legacy/issues"
+  },
+  "homepage": "https://github.com/hoodiehq/hoodie-server-legacy#readme",
+  "devDependencies": {
+    "coveralls": "^2.11.12",
+    "nock": "^8.0.0",
+    "nyc": "^7.1.0",
+    "proxyquire": "^1.7.10",
+    "semantic-release": "^6.3.0",
+    "simple-mock": "^0.7.0",
+    "standard": "^7.1.2",
+    "tap": "^6.3.0"
+  },
+  "dependencies": {
+    "@hoodie/account-server": "^4.0.2",
+    "@hoodie/store-server": "^2.0.2",
+    "h2o2": "^5.1.0",
+    "inert": "^4.0.1",
+    "jsonfile": "^2.3.1",
+    "lout": "^9.1.0",
+    "pouchdb-admins": "^1.0.3",
+    "pouchdb-users": "^1.0.3",
+    "request": "^2.74.0",
+    "strip-url-auth": "^1.0.1",
+    "vision": "^4.1.0"
+  }
+}
