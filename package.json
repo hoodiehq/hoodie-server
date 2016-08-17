@@ -53,6 +53,7 @@
     "mkdirp": "^0.5.1",
     "pouchdb-admins": "^1.0.3",
     "pouchdb-users": "^1.0.3",
+    "randomstring": "^1.1.5",
     "request": "^2.74.0",
     "strip-url-auth": "^1.0.1",
     "vision": "^4.1.0"
