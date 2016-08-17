@@ -1,65 +1,84 @@
-![The Low-Profile Dog Hoodie Mascot](https://avatars1.githubusercontent.com/u/1888826?v=3&s=200)
+# hoodie-server
 
-# Welcome to Hoodie Server! 🎉
+> Hapi plugin for Hoodie’s server core module
 
-[![Build Status](https://travis-ci.org/hoodiehq/hoodie-server.svg?branch=next)](https://travis-ci.org/hoodiehq/hoodie-server)
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-server/badge.svg?branch=next&service=github)](https://coveralls.io/github/hoodiehq/hoodie-server?branch=next)
-[![Dependency Status](https://david-dm.org/hoodiehq/hoodie-server/next.svg)](https://david-dm.org/hoodiehq/hoodie-server/next)
-[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-server/next/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-server/next#info=dependencies)
+[![Build Status](https://travis-ci.org/hoodiehq/hoodie-server.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-server)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-server/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-server?branch=master)
+[![Dependency Status](https://david-dm.org/hoodiehq/hoodie-server.svg)](https://david-dm.org/hoodiehq/hoodie-server)
+[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-server/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-server#info=devDependencies)
 
+`@hoodie/server` integrates Hoodie’s server core modules:
 
-`@hoodie/server` is the core server component of Hoodie. Together with `@hoodie/client`, it forms the two parts that make up the Hoodie system.
+- [account-server](https://github.com/hoodiehq/hoodie-account-server)
+- [store-server](https://github.com/hoodiehq/hoodie-store-server)
 
-`@hoodie/server` itself is responsible for only a few things:
+## Example
 
-- providing a normalized [config](lib/config.js) for itself and all core components/plugins
-- providing an API to interact with [databases](lib/database.js) to components/plugins
-- starting and configuring a [hapi server](lib/hapi.js) that also [serves static assets](lib/public.js) like hoodie-client and hoodie-admin-dashboard ([#493](https://github.com/hoodiehq/hoodie-server/issues/493))
+```js
+var Hapi = require('hapi')
+var hoodie = require('@hoodie/server').register
+var PouchDB = require('pouchdb-core').plugin(require('pouchdb-adapter-memory'))
 
-The rest is handled by components like [hoodie-account-server](https://github.com/hoodiehq/hoodie-account-server), or [hoodie-store-server](https://github.com/hoodiehq/hoodie-store-server).
+var server = new Hapi.Server()
+server.connection({
+  host: 'localhost',
+  port: 8000
+})
 
-`@hoodie/server` isn’t meant to be used by itself and it is used by the `hoodie` module, which also inlcudes `@hoodie/client` to form Hoodie.
+server.register({
+  register: hoodie,
+  options: { // pass options here
+    PouchDB: PouchDB,
+    paths: {
+      public: 'dist'
+    }
+  }
+}, function (error) {
+  if (error) {
+    throw error
+  }
 
-You can use `@hoodie/server` on its own, if you want to work on it, help fix bugs or test new versions. And when you are writing your own components/plugins, you can use `@hoodie/server` for debugging.
+  server.start(function (error) {
+    if (error) {
+      throw error
+    }
+
+    console.log(('Server running at:', server.info.uri)
+  })
+})
+```
 
 ## Usage
 
-As noted before, this isn’t meant to be run standalone. But if you are helping out with development, building your own components/plugins, or just want to spelunk around, here’s how it works:
-
-```
-git clone git@github.com:hoodiehq/hoodie-server.git
-cd hoodie-server
-npm install @hoodie/start
-npm install
-./node_modules/.bin/hoodie-start
-```
-
-There are a few options to change the behaviour of `@hoodie/server`.
-
-option        | default                            | description
-------------- | ---------------------------------- | -------------
-loglevel      | 'warn'                             |
-port          | 8080                               | Port-number to run the Hoodie App on
-bindAddress   | 127.0.0.1                          | Address that Hoodie binds to
-public        | path.join(options.path, 'public')  | path to static assets
-inMemory      | false                              | Whether to start the PouchDB Server in memory
-dbUrl         | PouchDB Server                     | If provided does not start PouchDB Server and uses external CouchDB. Has to contain credentials.
-data          | path.join(options.path, '.hoodie') | Data path
-
-If that doesn’t make much sense just yet, don’t worry about it.
+option                    | default      | description
+------------------------- | ------------ | -------------
+**paths.data**            | `'.hoodie'`  | Data path
+**paths.public**          | `'public'`   | Public path
+**PouchDB**               | –            | [PouchDB constructor](https://pouchdb.com/api.html#defaults). See also [custom PouchDB builds](https://pouchdb.com/2016/06/06/introducing-pouchdb-custom-builds.html).
+**account**               | `{}`         | [Hoodie Account Server](https://github.com/hoodiehq/hoodie-account-server/tree/master/plugin#options) options. `account.admins`, `account.secret` and `account.usersDb` are set based on `db` option above.
+**store**                 | `{}`         | [Hoodie Store Server](https://github.com/hoodiehq/hoodie-store-server#options) options. `store.couchdb`, `store.PouchDB` are set based on the `PouchDB` option above. `store.hooks.onPreAuth` is set to bind user authentication for Hoodie Account to Hoodie Store.
 
 ## Testing
 
-The `@hoodie/server` test suite is run with `npm test`.
+Local setup
 
-The tests live in `test/unit` and `test/integration`. `test/unit` tests (or “unit tests”) are to test the behaviour of individual sub-modules within `@hoodie/server`, while `test/integration` tests (or “integration tests”) are used to test the behaviour of a fully running instance of `@hoodie/server`, e.g. the behaviour of its HTTP API.
+```
+git clone https://github.com/hoodiehq/hoodie-server.git
+cd hoodie-server
+npm install
+```
 
-If you are adding new features to `@hoodie/server` you should provide test cases for the new feature. Depending on the feature, it's either best to write unit tests or integration tests and sometimes even both. The more tests we have, the more confidently we can release future versions of `@hoodie/server`.
+Run all tests
 
-## Need help or want to help?
+```
+npm test
+```
 
-It’s best to join our [chat](http://hood.ie/chat/).
+## Contributing
+
+Have a look at the Hoodie project's [contribution guidelines](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md).
+If you want to hang out you can join our [Hoodie Community Chat](http://hood.ie/chat/).
 
 ## License
 
-[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+[Apache 2.0](LICENSE)
