@@ -55,5 +55,32 @@ test('assure config folders', function (group) {
     })
   })
 
+  group.test('with config.db.prefix that is an url', function (t) {
+    var mkdirpMock = simple.stub().callbackWith(null)
+    var assureFolders = proxyquire('../../lib/config/assure-folders', {
+      mkdirp: mkdirpMock
+    })
+
+    assureFolders({
+      config: {
+        paths: {
+          data: 'data path'
+        }
+      },
+      db: {
+        options: {
+          prefix: 'http://admin:admin@localhost:5984'
+        }
+      }
+    }, function (error) {
+      t.error(error)
+
+      t.is(mkdirpMock.callCount, 1, 'mkdirp called once')
+      t.is(mkdirpMock.lastCall.arg, 'data path', 'db prefix path created')
+
+      t.end()
+    })
+  })
+
   group.end()
 })
