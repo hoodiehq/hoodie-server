@@ -29,7 +29,7 @@ test('smoke test', function (t) {
       t.error(error, 'hoodie starts without error')
 
       request({
-        url: 'http://localhost:8090/hoodie/store/api/',
+        url: 'http://localhost:8090/hoodie/store/api/some-db',
         json: true
       }, function (error, response, data) {
         t.error(error, 'no error on request')

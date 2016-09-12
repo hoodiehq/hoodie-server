@@ -4,11 +4,12 @@ var proxyquire = require('proxyquire').noCallThru()
 
 test('index', function (group) {
   group.test('binds account event handlers to create / destory user databases', function (t) {
-    var addUserDatabaseStub = simple.stub()
-    var removeUserDatabaseStub = simple.stub()
     var onAccountEventStub = simple.stub()
+    var createStoreStub = simple.stub().resolveWith('created-db')
+    var destroyStoreStub = simple.stub().resolveWith('destroyed-db')
     var config = {}
     var server = {
+      log: function () {},
       plugins: {
         account: {
           api: {
@@ -16,16 +17,18 @@ test('index', function (group) {
               on: onAccountEventStub
             }
           }
+        },
+        store: {
+          api: {
+            create: createStoreStub,
+            destroy: destroyStoreStub
+          }
         }
       }
     }
     var hapiPlugin = proxyquire('../../index', {
       './lib/config': simple.stub().callbackWith(null, config),
-      './lib/plugins': simple.stub().callbackWith(null),
-      './lib/utils/user-databases': {
-        add: addUserDatabaseStub,
-        remove: removeUserDatabaseStub
-      }
+      './lib/plugins': simple.stub().callbackWith(null)
     }).register
 
     hapiPlugin(server, config, function (error) {
@@ -38,11 +41,14 @@ test('index', function (group) {
       var addHandler = onAccountEventStub.calls[0].args[1]
       var removeHandler = onAccountEventStub.calls[1].args[1]
 
-      addHandler('foo')
-      removeHandler('bar')
+      addHandler({id: 'foo'})
+      removeHandler({id: 'bar'})
 
-      t.deepEqual(addUserDatabaseStub.lastCall.args, [config, server, 'foo'])
-      t.deepEqual(removeUserDatabaseStub.lastCall.args, [config, server, 'bar'])
+      t.deepEqual(createStoreStub.lastCall.args, ['user/foo', {
+        access: ['read', 'write'],
+        role: ['id:foo']
+      }])
+      t.deepEqual(destroyStoreStub.lastCall.args, ['user/bar'])
 
       t.end()
     })

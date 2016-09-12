@@ -20,9 +20,16 @@ test('init couchdb', function (t) {
       user: 'secret'
     })
 
+    // mocks for migration
+    .get('/hoodie-store')
+    .reply(200)
+
   var couchdb = require('../../../lib/config/db/couchdb')
 
   couchdb({
+    server: {
+      log: function () {}
+    },
     db: {
       options: {
         prefix: 'http://a:b@127.0.0.1:5984/'

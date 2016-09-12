@@ -45,13 +45,13 @@ test('config', function (group) {
         server: serverMock,
         config: config,
         inMemory: false,
+        PouchDB: PouchDBMock,
         db: {
           options: {}
         }
       }
 
       t.is(couchDbConfigMock.callCount, 0, 'couchdb config not called')
-      t.same(pouchDbConfigMock.lastCall.arg, state, 'called pouchdb config')
       t.same(accountConfigMock.lastCall.arg, state, 'called account config')
       t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
@@ -102,6 +102,7 @@ test('config', function (group) {
         server: serverMock,
         inMemory: false,
         config: config,
+        PouchDB: PouchDBMock,
         db: {
           options: {}
         }
