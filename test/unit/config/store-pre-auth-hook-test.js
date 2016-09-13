@@ -242,6 +242,56 @@ test('store pre auth hook not public access & session found', function (t) {
   })
 })
 
+test('store pre auth hook read-only byy users for POST db/_all_docs', function (t) {
+  var findSessionStub = simple.stub().resolveWith({
+    id: 'session123',
+    account: {
+      id: 'account123',
+      roles: []
+    }
+  })
+  var hasAccessStub = simple.stub().callFn(function (name, options) {
+    if (options.role) {
+      return Promise.resolve(true) // accessiable to signed in user
+    }
+
+    return Promise.resolve(false) // not public access
+  })
+  var serverStub = {
+    plugins: {
+      account: {
+        api: {
+          sessions: {
+            find: findSessionStub
+          }
+        }
+      },
+      store: {
+        api: {
+          hasAccess: hasAccessStub
+        }
+      }
+    }
+  }
+  var request = {
+    method: 'post',
+    path: '/hoodie/store/api/user%2F456/_all_docs',
+    headers: {
+      authorization: 'Session session123'
+    },
+    connection: {
+      server: serverStub
+    }
+  }
+
+  t.plan(1)
+  preAuthHook(request, {
+    continue: function () {
+      t.pass('all good')
+    }
+  })
+})
+
 test('store pre auth hook unauthorized error', function (t) {
   var session = {
     session: {
