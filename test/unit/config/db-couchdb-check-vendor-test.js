@@ -1,13 +1,13 @@
 var simple = require('simple-mock')
 var test = require('tap').test
 
-var getVendor = require('../../../lib/config/db/couchdb-get-vendor.js')
+var checkVendor = require('../../../lib/config/db/couchdb-check-vendor.js')
 
 test('check couch vendor', function (group) {
   group.test('request fails', function (t) {
     t.plan(2)
 
-    getVendor({
+    checkVendor({
       db: {
         options: {
           prefix: 'http://localhost:5984'
@@ -19,7 +19,7 @@ test('check couch vendor', function (group) {
       t.match(error.message, 'http://localhost:5984')
     })
 
-    getVendor({
+    checkVendor({
       db: {
         options: {
           prefix: 'http://localhost:5984'
@@ -33,11 +33,11 @@ test('check couch vendor', function (group) {
   })
 
   group.test('verify vendor', function (t) {
-    t.plan(2)
+    t.plan(3)
 
     var logStub = simple.stub()
 
-    getVendor({
+    checkVendor({
       server: {
         log: logStub
       }
@@ -45,12 +45,12 @@ test('check couch vendor', function (group) {
       callback(null, {
         statusCode: 200
       }, {
-        'couchdb': 'Welcome'
+        '<% VENDOR %>': 'Welcome!'
       })
-    }, function (error, vendor) {
-      t.error(error)
-      t.is(typeof vendor, 'object')
-    })
+
+      t.is(logStub.callCount, 1)
+      t.match(logStub.lastCall.args[1], /<% VENDOR %>/)
+    }, t.error)
   })
 
   group.end()

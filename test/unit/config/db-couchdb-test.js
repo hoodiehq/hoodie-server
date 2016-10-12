@@ -6,18 +6,15 @@ test('init couchdb', function (t) {
     .get('/')
     .reply(200, {couchdb: 'Welcome'})
 
-    .put('/_config/httpd/authentication_handlers')
-    .reply(200)
-
-    .get('/_config/couch_httpd_auth')
+    .get('/_config')
     .reply(200, {
-      secret: 'foo',
-      authentication_db: '_users'
-    })
-
-    .get('/_config/admins')
-    .reply(200, {
-      user: 'secret'
+      admins: {
+        user: 'secret'
+      },
+      couch_httpd_auth: {
+        secret: 'foo',
+        authentication_db: '_users'
+      }
     })
 
     // mocks for migration
@@ -64,67 +61,6 @@ test('init couchdb error handling', function (t) {
   }, function (error, result) {
     t.ok(error)
     t.is(error.message, 'Could not find CouchDB at http://127.0.0.1:5984/')
-    t.end()
-  })
-})
-
-test('init cloudant', function (t) {
-  nock('http://127.0.0.1:5984')
-    .get('/')
-    .reply(200, {
-      couchdb: 'Welcome',
-      vendor: {
-        name: 'IBM Cloudant'
-      }
-    })
-
-    // mocks for migration
-    .get('/hoodie-store')
-    .reply(200)
-
-  var couchdb = require('../../../lib/config/db/couchdb')
-
-  couchdb({
-    server: {
-      log: function () {}
-    },
-    db: {
-      options: {
-        prefix: 'http://a:b@127.0.0.1:5984/'
-      }
-    }
-  }, function (error, result) {
-    t.error(error)
-    t.is(result.db.authenticationDb, '_users')
-    t.end()
-  })
-})
-
-test('init non-couchdb', function (t) {
-  nock('http://127.0.0.1:5984')
-    .get('/')
-    .reply(200, {
-      notcouchdb: 'Welcome'
-    })
-
-    // mocks for migration
-    .get('/hoodie-store')
-    .reply(200)
-
-  var couchdb = require('../../../lib/config/db/couchdb')
-
-  couchdb({
-    server: {
-      log: function () {}
-    },
-    db: {
-      options: {
-        prefix: 'http://a:b@127.0.0.1:5984/'
-      }
-    }
-  }, function (error, result) {
-    t.ok(error)
-    t.is(error.message, 'CouchDB server is not compatible with this version of hoodie-server')
     t.end()
   })
 })
