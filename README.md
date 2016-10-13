@@ -17,7 +17,7 @@
 ```js
 var Hapi = require('hapi')
 var hoodie = require('@hoodie/server').register
-var PouchDB = require('pouchdb-core').plugin(require('pouchdb-adapter-memory'))
+var PouchDB = require('pouchdb-core').plugin(require('pouchdb-mapreduce')).plugin(require('pouchdb-adapter-memory'))
 
 var server = new Hapi.Server()
 server.connection({
