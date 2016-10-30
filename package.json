@@ -41,7 +41,7 @@
     "tap": "^6.3.0"
   },
   "dependencies": {
-    "@hoodie/account-server": "^4.0.2",
+    "@hoodie/account-server": "^6.0.4",
     "@hoodie/store-server": "^2.0.2",
     "async": "^2.0.1",
     "boom": "^3.2.2",
@@ -51,7 +51,6 @@
     "lodash": "^4.14.1",
     "mkdirp": "^0.5.1",
     "pouchdb-admins": "^1.0.3",
-    "pouchdb-users": "^1.0.3",
     "randomstring": "^1.1.5",
     "request": "^2.74.0",
     "strip-url-auth": "^1.0.1",
