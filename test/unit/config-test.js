@@ -2,7 +2,9 @@ var proxyquire = require('proxyquire').noCallThru()
 var simple = require('simple-mock')
 var test = require('tap').test
 
-var serverMock = {}
+var serverMock = {
+  on: function () {}
+}
 
 test('config', function (group) {
   group.test('defaults', function (t) {
