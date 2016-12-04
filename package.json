@@ -8,7 +8,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "pretest": "standard",
-    "test": "nyc tap --no-cov ./test/{unit,integration}/{**,**/**}-test.js"
+    "test": "nyc tap --no-cov './test/{unit,integration}/**/*-test.js'"
   },
   "engines": {
     "node": ">=4"
