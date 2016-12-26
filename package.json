@@ -28,10 +28,10 @@
   "homepage": "https://github.com/hoodiehq/hoodie-server#readme",
   "devDependencies": {
     "coveralls": "^2.11.12",
-    "hapi": "^15.2.0",
+    "hapi": "^16.0.2",
     "memdown": "^1.2.0",
     "nock": "^9.0.2",
-    "nyc": "^8.3.2",
+    "nyc": "^10.0.0",
     "pouchdb-adapter-memory": "^6.0.7",
     "pouchdb-core": "^6.0.7",
     "proxyquire": "^1.7.10",
