@@ -30,7 +30,6 @@ test('generate couch config', function (group) {
     }, function (error, result) {
       t.error(error)
       t.is(result.db.secret, 'a')
-      t.is(result.db.authenticationDb, '_users')
       t.end()
     })
   })
@@ -103,7 +102,6 @@ test('generate couch config', function (group) {
     }, function (error, result) {
       t.error(error)
       t.is(result.db.secret.length, 32)
-      t.is(result.db.authenticationDb, '_users')
       t.end()
     })
   })

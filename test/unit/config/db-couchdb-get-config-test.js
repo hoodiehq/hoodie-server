@@ -20,7 +20,7 @@ test('get couch config', function (group) {
   })
 
   group.test('request succeds', function (t) {
-    t.plan(9)
+    t.plan(6)
 
     getConfig(function (input, callback) {
       t.is(input.url, '/_config/couch_httpd_auth')
@@ -31,23 +31,14 @@ test('get couch config', function (group) {
 
     getConfig(function (input, callback) {
       t.is(input.url, '/_config/couch_httpd_auth')
-      callback(null, null, {secret: 'foo'})
-    }, function (error) {
-      t.ok(error instanceof Error)
-    })
-
-    getConfig(function (input, callback) {
-      t.is(input.url, '/_config/couch_httpd_auth')
       callback(null, null, {
         secret: 'foo',
-        authentication_db: 'bar',
         ignore: 'baz'
       })
     }, function (error, result) {
       t.error(error)
 
       t.is(result.secret, 'foo')
-      t.is(result.authentication_db, 'bar')
       t.notOk(result.ignore)
     })
   })
