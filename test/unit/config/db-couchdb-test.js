@@ -11,8 +11,7 @@ test('init couchdb', function (t) {
 
     .get('/_config/couch_httpd_auth')
     .reply(200, {
-      secret: 'foo',
-      authentication_db: '_users'
+      secret: 'foo'
     })
 
     .get('/_config/admins')
@@ -35,7 +34,6 @@ test('init couchdb', function (t) {
     t.error(error)
 
     t.is(result.db.secret, 'foo')
-    t.is(result.db.authenticationDb, '_users')
     t.same(result.db.admins, {
       user: 'secret'
     })
