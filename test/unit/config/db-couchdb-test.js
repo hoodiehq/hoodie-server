@@ -20,10 +20,6 @@ test('init couchdb', function (t) {
       user: 'secret'
     })
 
-    // mocks for migration
-    .get('/hoodie-store')
-    .reply(200)
-
   var couchdb = require('../../../lib/config/db/couchdb')
 
   couchdb({
