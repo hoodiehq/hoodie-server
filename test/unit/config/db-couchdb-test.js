@@ -6,18 +6,15 @@ test('init couchdb', function (t) {
     .get('/')
     .reply(200, {couchdb: 'Welcome'})
 
-    .put('/_config/httpd/authentication_handlers')
-    .reply(200)
-
-    .get('/_config/couch_httpd_auth')
+    .get('/_config')
     .reply(200, {
-      secret: 'foo',
-      authentication_db: '_users'
-    })
-
-    .get('/_config/admins')
-    .reply(200, {
-      user: 'secret'
+      admins: {
+        user: 'secret'
+      },
+      couch_httpd_auth: {
+        secret: 'foo',
+        authentication_db: '_users'
+      }
     })
 
     // mocks for migration
