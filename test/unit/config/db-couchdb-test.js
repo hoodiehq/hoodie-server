@@ -1,4 +1,5 @@
 var nock = require('nock')
+var simple = require('simple-mock')
 var test = require('tap').test
 
 test('init couchdb', function (t) {
@@ -26,6 +27,9 @@ test('init couchdb', function (t) {
       log: function () {}
     },
     db: {
+      config: {
+        get: simple.stub().resolveWith({secret: 'foo'})
+      },
       options: {
         prefix: 'http://a:b@127.0.0.1:5984/'
       }

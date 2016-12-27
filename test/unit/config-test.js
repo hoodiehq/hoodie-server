@@ -31,12 +31,13 @@ test('config', function (group) {
       }
     })
 
-    var PouchDBMock = function () {
-      return {
-        __opts: {}
-      }
-    }
+    var docApiStub = simple.stub()
+    var PouchDBMock = simple.stub().returnWith({
+      __opts: {},
+      doc: docApiStub
+    })
     PouchDBMock.preferredAdapters = ['test']
+    PouchDBMock.plugin = simple.stub().returnWith(PouchDBMock)
 
     getConfig(serverMock, {
       PouchDB: PouchDBMock
@@ -49,6 +50,7 @@ test('config', function (group) {
         inMemory: false,
         PouchDB: PouchDBMock,
         db: {
+          config: docApiStub(),
           options: {}
         }
       }
@@ -88,12 +90,13 @@ test('config', function (group) {
       }
     })
 
-    var PouchDBMock = function () {
-      return {
-        __opts: {}
-      }
-    }
+    var docApiStub = simple.stub()
+    var PouchDBMock = simple.stub().returnWith({
+      __opts: {},
+      doc: docApiStub
+    })
     PouchDBMock.preferredAdapters = []
+    PouchDBMock.plugin = simple.stub().returnWith(PouchDBMock)
 
     getConfig(serverMock, {
       PouchDB: PouchDBMock
@@ -106,6 +109,7 @@ test('config', function (group) {
         config: config,
         PouchDB: PouchDBMock,
         db: {
+          config: docApiStub(),
           options: {}
         }
       }

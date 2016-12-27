@@ -1,41 +1,9 @@
+var proxyquire = require('proxyquire').noCallThru()
 var simple = require('simple-mock')
 var test = require('tap').test
-var proxyquire = require('proxyquire').noCallThru()
 
 test('generate couch config', function (group) {
-  group.test('read from file', function (t) {
-    var pouchDbConfig = proxyquire('../../../lib/config/db/pouchdb.js', {
-      fs: {
-        existsSync: function () {
-          return true
-        }
-      },
-      jsonfile: {
-        readFileSync: function () {
-          return {
-            couch_httpd_auth_secret: 'a'
-          }
-        },
-        writeFileSync: function () {}
-      }
-    })
-
-    pouchDbConfig({
-      db: {},
-      config: {
-        paths: {
-          data: ''
-        }
-      }
-    }, function (error, result) {
-      t.error(error)
-      t.is(result.db.secret, 'a')
-      t.end()
-    })
-  })
-
-  group.test('writes config file', function (t) {
-    var writeFileSyncStub = simple.stub()
+  group.test('read admins from file, get secret from config', function (t) {
     var pouchDbConfig = proxyquire('../../../lib/config/db/pouchdb.js', {
       fs: {
         existsSync: function () {
@@ -46,17 +14,13 @@ test('generate couch config', function (group) {
         readFileSync: function () {
           return {
             admins: {
-              admin: 'passwordhash'
+              admin: 'foo'
             }
           }
         },
-        writeFileSync: writeFileSyncStub
+        writeFileSync: function () {}
       },
-      randomstring: {
-        generate: function () {
-          return 'randomstring'
-        }
-      }
+      './get-secret': simple.stub().callbackWith(null, 'secret')
     })
 
     pouchDbConfig({
@@ -69,18 +33,12 @@ test('generate couch config', function (group) {
     }, function (error, result) {
       t.error(error)
 
-      t.deepEqual(writeFileSyncStub.lastCall.args[1], {
-        admins: {
-          admin: 'passwordhash'
-        },
-        couch_httpd_auth_secret: 'randomstring'
-      })
-
+      t.is(result.db.secret, 'secret')
       t.end()
     })
   })
 
-  group.test('generate and write to file', function (t) {
+  group.test('generate and write admins to file', function (t) {
     var pouchDbConfig = proxyquire('../../../lib/config/db/pouchdb.js', {
       fs: {
         existsSync: function () {
@@ -89,7 +47,8 @@ test('generate couch config', function (group) {
       },
       jsonfile: {
         writeFileSync: function () {}
-      }
+      },
+      './get-secret': simple.stub().callbackWith(null, 'secret')
     })
 
     pouchDbConfig({
@@ -101,12 +60,12 @@ test('generate couch config', function (group) {
       }
     }, function (error, result) {
       t.error(error)
-      t.is(result.db.secret.length, 32)
+      t.ok(/^-pbkdf2-/.test(result.db.admins.admin))
       t.end()
     })
   })
 
-  group.test('error handling', function (t) {
+  group.test('file error handling', function (t) {
     var pouchDbConfig = proxyquire('../../../lib/config/db/pouchdb.js', {
       fs: {
         existsSync: function () {
@@ -124,7 +83,32 @@ test('generate couch config', function (group) {
             }
           }
         }
+      },
+      './get-secret': simple.stub().callbackWith(null, 'secret')
+    })
+
+    pouchDbConfig({
+      db: {},
+      config: {
+        paths: {
+          data: ''
+        }
       }
+    }, function (error, result) {
+      t.ok(error, 'callsback with error')
+      t.is(error.message, 'ooops', 'callsback with error admins.set promise rejected with')
+      t.end()
+    })
+  })
+
+  group.test('config error handling', function (t) {
+    var pouchDbConfig = proxyquire('../../../lib/config/db/pouchdb.js', {
+      fs: {
+        existsSync: function () {
+          return false
+        }
+      },
+      './get-secret': simple.stub().callbackWith(new Error('ooops'))
     })
 
     pouchDbConfig({
