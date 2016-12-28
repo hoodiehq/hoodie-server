@@ -9,20 +9,19 @@ var serverMock = {
 test('config', function (group) {
   group.test('defaults', function (t) {
     var accountConfigMock = simple.stub().callbackWith(null)
+    var adminsConfigMock = simple.stub().callbackWith(null)
     var assureFolders = simple.stub().callbackWith(null)
     var couchDbConfigMock = simple.stub().callbackWith(null)
-    var getDatabaseFactoryMock = simple.stub().returnWith('getDatabase')
     var appOptionsMock = simple.stub().returnWith('app options')
-    var pouchDbConfigMock = simple.stub().callbackWith(null)
+    var secretConfigMock = simple.stub().callbackWith(null)
     var storeConfigMock = simple.stub().callbackWith(null)
 
     var getConfig = proxyquire('../../lib/config', {
       './account': accountConfigMock,
       './assure-folders': assureFolders,
-      './db/couchdb': couchDbConfigMock,
-      './db/factory': getDatabaseFactoryMock,
+      './admins': adminsConfigMock,
       './app-options': appOptionsMock,
-      './db/pouchdb': pouchDbConfigMock,
+      './secret': secretConfigMock,
       './store': storeConfigMock,
       'fs': {
         statSync: simple.stub().returnWith({
@@ -59,29 +58,33 @@ test('config', function (group) {
       t.same(accountConfigMock.lastCall.arg, state, 'called account config')
       t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
-      t.ok(pouchDbConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'pouch config called before account config')
-      t.ok(pouchDbConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'pouch config called before store config')
+      t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
+      t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
+      t.ok(adminsConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'admin config called before store config')
 
       t.end()
     })
   })
 
-  group.test('with http adapter', function (t) {
+  group.end()
+})
+
+test('config with http adapter', function (group) {
+  group.test('defaults', function (t) {
     var accountConfigMock = simple.stub().callbackWith(null)
+    var adminsConfigMock = simple.stub().callbackWith(null)
     var assureFolders = simple.stub().callbackWith(null)
     var couchDbConfigMock = simple.stub().callbackWith(null)
-    var getDatabaseFactoryMock = simple.stub().returnWith('getDatabase')
-    var appOptionsMock = simple.stub().returnWith({})
-    var pouchDbConfigMock = simple.stub().callbackWith(null)
+    var appOptionsMock = simple.stub().returnWith('app options')
+    var secretConfigMock = simple.stub().callbackWith(null)
     var storeConfigMock = simple.stub().callbackWith(null)
 
     var getConfig = proxyquire('../../lib/config', {
       './account': accountConfigMock,
       './assure-folders': assureFolders,
-      './db/couchdb': couchDbConfigMock,
-      './db/factory': getDatabaseFactoryMock,
+      './admins': adminsConfigMock,
       './app-options': appOptionsMock,
-      './db/pouchdb': pouchDbConfigMock,
+      './secret': secretConfigMock,
       './store': storeConfigMock,
       'fs': {
         statSync: simple.stub().returnWith({
@@ -105,8 +108,8 @@ test('config', function (group) {
 
       var state = {
         server: serverMock,
-        inMemory: false,
         config: config,
+        inMemory: false,
         PouchDB: PouchDBMock,
         db: {
           config: docApiStub(),
@@ -114,10 +117,13 @@ test('config', function (group) {
         }
       }
 
-      t.is(pouchDbConfigMock.callCount, 0, 'PouchDB config not called')
-      t.same(couchDbConfigMock.lastCall.arg, state, 'called couchdb config')
+      t.is(couchDbConfigMock.callCount, 0, 'couchdb config not called')
       t.same(accountConfigMock.lastCall.arg, state, 'called account config')
       t.same(storeConfigMock.lastCall.arg, state, 'called store config')
+
+      t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
+      t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
+      t.ok(adminsConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'admin config called before store config')
 
       t.end()
     })
