@@ -52,10 +52,11 @@ server.register({
 
 option                    | default      | description
 ------------------------- | ------------ | -------------
+**adminPassword**         | -            | Password to login with admin account
 **paths.data**            | `'.hoodie'`  | Data path
 **paths.public**          | `'public'`   | Public path
 **PouchDB**               | –            | [PouchDB constructor](https://pouchdb.com/api.html#defaults). See also [custom PouchDB builds](https://pouchdb.com/2016/06/06/introducing-pouchdb-custom-builds.html).
-**account**               | `{}`         | [Hoodie Account Server](https://github.com/hoodiehq/hoodie-account-server/tree/master/plugin#options) options. `account.admins`, `account.secret` and `account.usersDb` are set based on `db` option above.
+**account**               | `{}`         | [Hoodie Account Server](https://github.com/hoodiehq/hoodie-account-server/tree/master/plugin#options) options. `account.admins` are generated based on `adminPassword` option above. `account.usersDb` is hardcoded to `_users` at this point. `account.secret` is stored in `hoodie-store/hoodie` and will be generated if it does not yet exist.
 **store**                 | `{}`         | [Hoodie Store Server](https://github.com/hoodiehq/hoodie-store-server#options) options. `store.couchdb`, `store.PouchDB` are set based on the `PouchDB` option above. `store.hooks.onPreAuth` is set to bind user authentication for Hoodie Account to Hoodie Store.
 
 ## Testing
