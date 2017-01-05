@@ -22,22 +22,11 @@ test('store pre auth hook', function (t) {
       roles: []
     }
   }
-  var findSessionStub = simple.stub().returnWith({ // don’t use resolveWith to avoid async
-    then: function (callback) {
-      callback(session)
-      return {
-        catch: function () {}
-      }
-    }
-  })
-  var hasAccessStub = simple.stub().returnWith({ // don’t use resolveWith to avoid async
-    then: function (callback) {
-      callback(true)
-      return Promise.resolve()
-    }
-  })
+  var findSessionStub = simple.stub().resolveWith(session)
+  var hasAccessStub = simple.stub().resolveWith(true).resolveWith(false)
 
   var serverStub = {
+    log: simple.stub(),
     plugins: {
       account: {
         api: {
@@ -62,15 +51,20 @@ test('store pre auth hook', function (t) {
       server: serverStub
     }
   }
-  var reply = {
-    continue: simple.stub()
-  }
+  var reply = simple.stub()
+  reply.continue = simple.stub()
 
-  preAuthHook(request, reply)
+  var output = preAuthHook(request, reply)
 
-  t.is(reply.continue.callCount, 1, 'reply.continue() called')
+  t.type(output, Promise, 'returns a Promise')
 
-  t.end()
+  return output.then(function () {
+    t.is(findSessionStub.callCount, 0, 'findSession should not be called')
+    t.is(hasAccessStub.callCount, 1, 'hasAccess should be called once only')
+    t.is(reply.continue.callCount, 1, 'reply.continue() called')
+    t.is(reply.callCount, 0, 'reply() should not be called')
+    t.end()
+  })
 })
 
 test('store pre auth hook root path', function (t) {
@@ -92,6 +86,7 @@ test('store pre auth hook root path', function (t) {
     }
   })
   var serverStub = {
+    log: simple.stub(),
     plugins: {
       account: {
         api: {
@@ -112,21 +107,25 @@ test('store pre auth hook root path', function (t) {
       server: serverStub
     }
   }
-  var reply = {
-    continue: simple.stub()
-  }
+  var reply = simple.stub()
+  reply.continue = simple.stub()
 
-  preAuthHook(request, reply)
+  var output = preAuthHook(request, reply)
 
-  t.is(reply.continue.callCount, 1, 'reply.continue() called')
+  t.type(output, Promise, 'returns a Promise')
 
-  t.end()
+  return output.then(function () {
+    t.is(reply.continue.callCount, 1, 'reply.continue() called')
+    t.is(reply.callCount, 0, 'reply() should not be called')
+    t.end()
+  })
 })
 
 test('store pre auth hook no authorization header', function (t) {
-  var findSessionStub = simple.stub().rejectWith({status: 404})
+  var findSessionStub = simple.stub()
   var hasAccessStub = simple.stub().resolveWith(false)
   var serverStub = {
+    log: simple.stub(),
     plugins: {
       account: {
         api: {
@@ -149,18 +148,26 @@ test('store pre auth hook no authorization header', function (t) {
       server: serverStub
     }
   }
+  var reply = simple.stub()
+  reply.continue = simple.stub()
 
-  t.plan(2)
-  preAuthHook(request, function (error) {
-    t.ok(error)
-    t.is(error.message, 'unauthorized', 'throws unauthorized error')
-  })
+  t.plan(6)
+  return preAuthHook(request, reply)
+    .then(function () {
+      t.is(findSessionStub.callCount, 0, 'findSession() should not be called')
+      t.is(hasAccessStub.callCount, 1, 'hasAccess() should be called once only')
+      t.is(reply.continue.callCount, 0, 'reply.continue() should not be called')
+      t.is(reply.callCount, 1, 'reply() called once only')
+      t.ok(reply.calls[0].args[0])
+      t.is(reply.calls[0].args[0].message, 'unauthorized', 'throws unauthorized error')
+    })
 })
 
 test('store pre auth hook session not found error', function (t) {
   var findSessionStub = simple.stub().rejectWith({status: 404})
   var hasAccessStub = simple.stub().resolveWith(false)
   var serverStub = {
+    log: simple.stub(),
     plugins: {
       account: {
         api: {
@@ -185,12 +192,17 @@ test('store pre auth hook session not found error', function (t) {
       server: serverStub
     }
   }
+  var reply = simple.stub()
+  reply.continue = simple.stub()
 
-  t.plan(2)
-  preAuthHook(request, function (error) {
-    t.ok(error)
-    t.is(error.message, 'unauthorized', 'throws unauthorized error')
-  })
+  t.plan(4)
+  preAuthHook(request, reply)
+    .then(function () {
+      t.is(reply.continue.callCount, 0, 'reply.continue() should not be called')
+      t.is(reply.callCount, 1, 'reply() called once only')
+      t.ok(reply.calls[0].args[0])
+      t.is(reply.calls[0].args[0].message, 'unauthorized', 'throws unauthorized error')
+    })
 })
 
 test('store pre auth hook not public access & session found', function (t) {
@@ -209,6 +221,7 @@ test('store pre auth hook not public access & session found', function (t) {
     return Promise.resolve(false) // not public access
   })
   var serverStub = {
+    log: simple.stub(),
     plugins: {
       account: {
         api: {
@@ -235,7 +248,7 @@ test('store pre auth hook not public access & session found', function (t) {
   }
 
   t.plan(1)
-  preAuthHook(request, {
+  return preAuthHook(request, {
     continue: function () {
       t.pass('all good')
     }
@@ -285,7 +298,7 @@ test('store pre auth hook read-only byy users for POST db/_all_docs', function (
   }
 
   t.plan(1)
-  preAuthHook(request, {
+  return preAuthHook(request, {
     continue: function () {
       t.pass('all good')
     }
@@ -331,7 +344,7 @@ test('store pre auth hook unauthorized error', function (t) {
   }
 
   t.plan(2)
-  preAuthHook(request, function (error) {
+  return preAuthHook(request, function (error) {
     t.ok(error)
     t.is(error.message, 'unauthorized', 'throws unauthorized error')
   })
@@ -377,7 +390,7 @@ test('store pre auth hook server error', function (t) {
   }
 
   t.plan(3)
-  preAuthHook(request, function (error) {
+  return preAuthHook(request, function (error) {
     t.ok(error)
     t.is(error.status, 500, 'throws 500 error')
     t.is(error.message, 'ooops', 'oooopsie')
