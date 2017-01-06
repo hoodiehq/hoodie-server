@@ -102,7 +102,7 @@ test('store pre auth hook root path', function (t) {
 
 // TODO: this test causes a UnhandledPromiseRejectionWarning and I dunno why
 test('store pre auth hook no authorization header', function (t) {
-  var findSessionStub = simple.stub().rejectWith({status: 404})
+  var findSessionStub = simple.stub()
   var hasAccessStub = simple.stub().resolveWith(false)
   var serverStub = {
     log: simple.stub(),
