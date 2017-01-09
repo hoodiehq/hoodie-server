@@ -29,6 +29,7 @@ var serverMock = {
       var adminsConfigMock = simple.stub().callbackWith(null)
       var assureFolders = simple.stub().callbackWith(null)
       var couchDbConfigMock = simple.stub().callbackWith(null)
+      var configPouchDbMock = simple.stub().callbackWith(null)
       var appOptionsMock = simple.stub().returnWith('app options')
       var secretConfigMock = simple.stub().callbackWith(null)
       var storeConfigMock = simple.stub().callbackWith(null)
@@ -38,6 +39,7 @@ var serverMock = {
         './assure-folders': assureFolders,
         './admins': adminsConfigMock,
         './app-options': appOptionsMock,
+        './configure-pouchdb': configPouchDbMock,
         './secret': secretConfigMock,
         './store': storeConfigMock,
         'fs': {
@@ -47,10 +49,8 @@ var serverMock = {
         }
       })
 
-      var docApiStub = simple.stub()
       var PouchDBMock = simple.stub().returnWith({
-        __opts: {},
-        doc: docApiStub
+        __opts: {}
       })
       PouchDBMock.preferredAdapters = testConfig.preferredAdapters
       PouchDBMock.plugin = simple.stub().returnWith(PouchDBMock)
@@ -66,23 +66,17 @@ var serverMock = {
           inMemory: testConfig.output.inMemory,
           PouchDB: PouchDBMock,
           db: {
-            config: docApiStub(),
             options: {}
           }
         }
 
         t.is(couchDbConfigMock.callCount, 0, 'couchdb config not called')
+        t.same(configPouchDbMock.lastCall.arg, state, 'called config PouchDB')
         t.same(accountConfigMock.lastCall.arg, state, 'called account config')
         t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
-        var pouchDbConstructorConfigCalls = PouchDBMock.calls.filter(function (item) {
-          return item.arg === 'hoodie-config'
-        })
-        t.equal(pouchDbConstructorConfigCalls.length, 1, 'PouchDB constructor for \'hoodie-config\' called once')
-        t.ok(
-          assureFolders.lastCall.k < pouchDbConstructorConfigCalls[0].k,
-          'assure folders called before PouchDB constructor for \'hoodie-config\''
-        )
+        t.ok(assureFolders.lastCall.k < configPouchDbMock.lastCall.k, 'assure folders called before config PouchDB')
+        t.ok(configPouchDbMock.lastCall.k < secretConfigMock.lastCall.k, 'config PouchDB called before secret config')
         t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
         t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
         t.ok(adminsConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'admin config called before store config')
