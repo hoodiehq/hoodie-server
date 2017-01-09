@@ -7,8 +7,21 @@ var serverMock = {
 }
 
 ;[
-  {name: 'config', preferredAdapters: ['test']},
-  {name: 'config with http adapter', preferredAdapters: []}
+  {
+    name: 'config',
+    preferredAdapters: ['test'],
+    output: {inMemory: false}
+  },
+  {
+    name: 'config with http adapter',
+    preferredAdapters: [],
+    output: {inMemory: false}
+  },
+  {
+    name: 'config with memory adapter',
+    preferredAdapters: ['memory'],
+    output: {inMemory: true}
+  }
 ].forEach(function (testConfig) {
   test(testConfig.name, function (group) {
     group.test('defaults', function (t) {
@@ -50,7 +63,7 @@ var serverMock = {
         var state = {
           server: serverMock,
           config: config,
-          inMemory: false,
+          inMemory: testConfig.output.inMemory,
           PouchDB: PouchDBMock,
           db: {
             config: docApiStub(),
