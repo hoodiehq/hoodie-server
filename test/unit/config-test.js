@@ -58,6 +58,14 @@ test('config', function (group) {
       t.same(accountConfigMock.lastCall.arg, state, 'called account config')
       t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
+      var pouchDbConstructorConfigCalls = PouchDBMock.calls.filter(function (item) {
+        return item.arg === 'hoodie-config'
+      })
+      t.equal(pouchDbConstructorConfigCalls.length, 1, 'PouchDB constructor for \'hoodie-config\' called once')
+      t.ok(
+        assureFolders.lastCall.k < pouchDbConstructorConfigCalls[0].k,
+        'assure folders called before PouchDB constructor for \'hoodie-config\''
+      )
       t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
       t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
       t.ok(adminsConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'admin config called before store config')
@@ -121,6 +129,14 @@ test('config with http adapter', function (group) {
       t.same(accountConfigMock.lastCall.arg, state, 'called account config')
       t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
+      var pouchDbConstructorConfigCalls = PouchDBMock.calls.filter(function (item) {
+        return item.arg === 'hoodie-config'
+      })
+      t.equal(pouchDbConstructorConfigCalls.length, 1, 'PouchDB constructor for \'hoodie-config\' called once')
+      t.ok(
+        assureFolders.lastCall.k < pouchDbConstructorConfigCalls[0].k,
+        'assure folders called before PouchDB constructor for \'hoodie-config\''
+      )
       t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
       t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
       t.ok(adminsConfigMock.lastCall.k < storeConfigMock.lastCall.k, 'admin config called before store config')
