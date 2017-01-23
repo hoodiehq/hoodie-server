@@ -27,7 +27,6 @@ var serverMock = {
     group.test('defaults', function (t) {
       var accountConfigMock = simple.stub().callbackWith(null)
       var adminsConfigMock = simple.stub().callbackWith(null)
-      var assureFolders = simple.stub().callbackWith(null)
       var couchDbConfigMock = simple.stub().callbackWith(null)
       var configPouchDbMock = simple.stub().callbackWith(null)
       var appOptionsMock = simple.stub().returnWith('app options')
@@ -36,7 +35,6 @@ var serverMock = {
 
       var getConfig = proxyquire('../../lib/config', {
         './account': accountConfigMock,
-        './assure-folders': assureFolders,
         './admins': adminsConfigMock,
         './app-options': appOptionsMock,
         './configure-pouchdb': configPouchDbMock,
@@ -75,7 +73,6 @@ var serverMock = {
         t.same(accountConfigMock.lastCall.arg, state, 'called account config')
         t.same(storeConfigMock.lastCall.arg, state, 'called store config')
 
-        t.ok(assureFolders.lastCall.k < configPouchDbMock.lastCall.k, 'assure folders called before config PouchDB')
         t.ok(configPouchDbMock.lastCall.k < secretConfigMock.lastCall.k, 'config PouchDB called before secret config')
         t.ok(secretConfigMock.lastCall.k < adminsConfigMock.lastCall.k, 'secret config called before admins config')
         t.ok(adminsConfigMock.lastCall.k < accountConfigMock.lastCall.k, 'admin config called before account config')
