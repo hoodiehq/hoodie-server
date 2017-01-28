@@ -3,7 +3,7 @@
 > Hapi plugin for Hoodie’s server core module
 
 [![Build Status](https://travis-ci.org/hoodiehq/hoodie-server.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-server)
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-server/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-server?branch=master)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-server/badge.svg?branch=master)](https://coveralls.io/github/hoodiehq/hoodie-server?branch=master)
 [![Dependency Status](https://david-dm.org/hoodiehq/hoodie-server.svg)](https://david-dm.org/hoodiehq/hoodie-server)
 [![devDependency Status](https://david-dm.org/hoodiehq/hoodie-server/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-server#info=devDependencies)
 
