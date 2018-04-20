@@ -28,18 +28,18 @@ function register (server, options, next) {
           role: ['id:' + account.id]
         })
 
-        .then(function (dbName) {
-          server.log(['store', 'info'], format('database %s created', dbName))
-        })
+          .then(function (dbName) {
+            server.log(['store', 'info'], format('database %s created', dbName))
+          })
       })
       server.plugins.account.api.accounts.on('remove', function (account) {
         server.log(['account', 'info'], format('removed for %s (id: %s)', account.username, account.id))
 
         server.plugins.store.api.destroy('user/' + account.id)
 
-        .then(function (dbName) {
-          server.log(['store', 'info'], format('database %s destroyed', dbName))
-        })
+          .then(function (dbName) {
+            server.log(['store', 'info'], format('database %s destroyed', dbName))
+          })
       })
 
       next(null, server, config)
