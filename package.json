@@ -26,9 +26,18 @@
     "url": "https://github.com/hoodiehq/hoodie-server/issues"
   },
   "homepage": "https://github.com/hoodiehq/hoodie-server#readme",
+  "greenkeeper": {
+    "ignore": [
+      "hapi",
+      "boom",
+      "h2o2",
+      "inert",
+      "vision"
+    ]
+  },
   "devDependencies": {
     "coveralls": "^3.0.0",
-    "hapi": "^17.3.1",
+    "hapi": "16.6.1",
     "memdown": "^2.0.0",
     "nock": "^9.0.9",
     "nyc": "^11.7.1",
@@ -44,9 +53,9 @@
     "@hoodie/account-server": "^6.1.0",
     "@hoodie/store-server": "^3.0.0",
     "async": "^2.1.5",
-    "boom": "^7.2.0",
-    "h2o2": "^8.1.0",
-    "inert": "^5.1.0",
+    "boom": "4.3.1",
+    "h2o2": "6.1.0",
+    "inert": "4.2.1",
     "jsonfile": "^4.0.0",
     "lodash": "^4.14.1",
     "pouchdb-admins": "^1.0.3",
@@ -54,6 +63,6 @@
     "randomstring": "^1.1.5",
     "request": "^2.80.0",
     "strip-url-auth": "^1.0.1",
-    "vision": "^5.3.2"
+    "vision": "4.1.1"
   }
 }
