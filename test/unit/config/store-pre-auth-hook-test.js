@@ -15,7 +15,7 @@ var preAuthHook = proxyquire('../../../lib/config/store/pre-auth-hook', {
 test('store pre auth hook', function (t) {
   var hasAccessStub = simple.stub().returnWith({ // don’t use resolveWith to avoid async
     then: function (callback) {
-      callback(true)
+      callback(true) // eslint-disable-line
       return Promise.resolve()
     }
   })

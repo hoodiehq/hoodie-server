@@ -29,14 +29,12 @@ var serverMock = {
       var adminsConfigMock = simple.stub().callbackWith(null)
       var couchDbConfigMock = simple.stub().callbackWith(null)
       var configPouchDbMock = simple.stub().callbackWith(null)
-      var appOptionsMock = simple.stub().returnWith('app options')
       var secretConfigMock = simple.stub().callbackWith(null)
       var storeConfigMock = simple.stub().callbackWith(null)
 
       var getConfig = proxyquire('../../lib/config', {
         './account': accountConfigMock,
         './admins': adminsConfigMock,
-        './app-options': appOptionsMock,
         './configure-pouchdb': configPouchDbMock,
         './secret': secretConfigMock,
         './store': storeConfigMock,

@@ -1,5 +1,7 @@
 # hoodie-server
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/hoodiehq/hoodie-server.svg)](https://greenkeeper.io/)
+
 > Hapi plugin for Hoodie’s server core module
 
 [![Build Status](https://travis-ci.org/hoodiehq/hoodie-server.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-server)
